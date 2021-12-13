@@ -10,7 +10,7 @@ public class Admin {
 	private List<Student> allStudents = new ArrayList<Student>();
 	
 	//Method for creating new Student from user input
-	public int createStudent(InputStream inputStream) {
+	public Integer createStudent(InputStream inputStream) {
 		Scanner scanner = new Scanner(inputStream);
 		System.out.println("What is your first name?");
 		String firstName = scanner.nextLine();
@@ -20,6 +20,8 @@ public class Admin {
 		
 		int year = Integer.parseInt(scanner.nextLine());
 		scanner.close();
+		
+		if (year < 1 || year > 7) return null;
 		
 		Student student = new Student(firstName, lastName, year);
 		allStudents.add(student);
