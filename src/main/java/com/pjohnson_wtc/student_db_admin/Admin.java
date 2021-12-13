@@ -30,13 +30,18 @@ public class Admin {
 			String lastName = scanner.nextLine();
 			System.out.println("What is your year?");
 		
-			int year = Integer.parseInt(scanner.nextLine());
+			String year = scanner.nextLine();
 			
-		
-			if (year > 0 && year < 8) {
-				studentYears.add(year);
-				Student student = new Student(firstName, lastName, year);
+			try {
+				int numYear = Integer.parseInt(year);
+			if (numYear > 0 && numYear < 8) {
+				studentYears.add(numYear);
+				Student student = new Student(firstName, lastName, numYear);
 				allStudents.add(student);
+			}
+			} catch (NumberFormatException e) {
+				System.out.println(e);
+				continue;
 			}
 		}
 		scanner.close();
