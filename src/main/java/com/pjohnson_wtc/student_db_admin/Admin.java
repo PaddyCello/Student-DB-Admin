@@ -14,6 +14,11 @@ public class Admin {
 		Scanner scanner = new Scanner(inputStream);
 		System.out.println("How many students are you adding?");
 		int numOfTimes = Integer.parseInt(scanner.nextLine());
+		
+		if (numOfTimes < 1) {
+			scanner.close();
+			return null;
+		}
 		ArrayList<Integer> studentYears = new ArrayList<Integer>();
 		
 		for (int i = 0; i < numOfTimes; i++) {
