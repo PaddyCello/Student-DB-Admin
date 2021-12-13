@@ -4,6 +4,7 @@ public class Student {
 	private String firstName;
 	private String lastName;
 	private int year;
+	private int studentId;
 	
 	public Student(String firstName, String lastName, int year) {
 		this.firstName = firstName;
@@ -13,5 +14,8 @@ public class Student {
 	
 	public String getFirstName() {
 		return firstName;
+	}
+	public int getStudentId() {
+		return studentId;
 	}
 }
