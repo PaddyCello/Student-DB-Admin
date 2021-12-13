@@ -13,7 +13,9 @@ public class Admin {
 	public int[] createStudent(InputStream inputStream) {
 		Scanner scanner = new Scanner(inputStream);
 		System.out.println("How many students are you adding?");
-		int numOfTimes = Integer.parseInt(scanner.nextLine());
+		
+		try {
+			int numOfTimes = Integer.parseInt(scanner.nextLine());
 		
 		if (numOfTimes < 1) {
 			scanner.close();
@@ -44,6 +46,12 @@ public class Admin {
 			studentYearPrimitive[i] = studentYears.get(i);
 		}
 		return studentYearPrimitive;
+		
+		} catch (NumberFormatException e) {
+			System.out.println(e);
+			scanner.close();
+			return null;
+		}
 	}
 	
 	public List<Student> getAllStudents() {
