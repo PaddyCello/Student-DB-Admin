@@ -4,8 +4,12 @@ import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class Admin {
+	
+	Logger logger = Logger.getLogger("com.pjohnson_wtc.student_db_admin.admin");
 	
 	private List<Student> allStudents = new ArrayList<Student>();
 	
@@ -25,6 +29,8 @@ public class Admin {
 		//Return early if user enters number lower than one
 		if (numOfTimes < 1) {
 			scanner.close();
+			
+			logger.log(Level.WARNING, "Number of Students too low.");
 			return null;
 		}
 		
@@ -48,7 +54,7 @@ public class Admin {
 				allStudents.add(checkYearAndCreateStudent(stringYear, studentIDs, firstName, lastName));
 				
 			} catch (NumberFormatException e) {
-				System.out.println(e);
+				logger.log(Level.WARNING, "Invalid number for Student year", e);
 				continue;
 			}
 		}
@@ -58,7 +64,7 @@ public class Admin {
 		return formatStudentYears(studentIDs);
 		
 		} catch (NumberFormatException e) {
-			System.out.println(e);
+			logger.log(Level.WARNING, "Invalid number for number of Students", e);
 			scanner.close();
 			return null;
 		}
@@ -85,10 +91,13 @@ public class Admin {
 			
 			Student student = new Student(firstName, lastName, year);
 			studentIDs.add(student.getStudentId());
+			
+			logger.log(Level.INFO, "New Student created.");
 			return student;
 		
 		} else {
 			
+			logger.log(Level.WARNING, "Invalid year.");
 			return null;
 		}
 	}
