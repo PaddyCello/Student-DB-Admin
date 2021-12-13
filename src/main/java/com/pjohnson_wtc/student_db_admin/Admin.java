@@ -29,7 +29,7 @@ public class Admin {
 		}
 		
 		//Create new ArrayList to hold IDs of successfully created Students
-		ArrayList<Integer> studentYears = new ArrayList<Integer>();
+		ArrayList<Integer> studentIDs = new ArrayList<Integer>();
 		
 		//Loop through as many times as user wishes to create Students
 		for (int i = 0; i < numOfTimes; i++) {
@@ -40,12 +40,12 @@ public class Admin {
 			System.out.println("What is your last name?");
 			String lastName = scanner.nextLine();
 			System.out.println("What is your year?");
-			String year = scanner.nextLine();
+			String stringYear = scanner.nextLine();
 			
 			//Validate year and create student, throw NumberFormatException if year not valid
 			try {
 				
-				allStudents.add(checkYearAndCreateStudent(year, studentYears, firstName, lastName));
+				allStudents.add(checkYearAndCreateStudent(stringYear, studentIDs, firstName, lastName));
 				
 			} catch (NumberFormatException e) {
 				System.out.println(e);
@@ -55,7 +55,7 @@ public class Admin {
 		
 		//Close scanner and return array of student IDs
 		scanner.close();
-		return formatStudentYears(studentYears);
+		return formatStudentYears(studentIDs);
 		
 		} catch (NumberFormatException e) {
 			System.out.println(e);
@@ -65,26 +65,26 @@ public class Admin {
 	}
 	
 	//Convert ArrayList<Integer> to int[]
-	private int[] formatStudentYears(ArrayList<Integer> studentYears) {
-		int[] studentYearPrimitive = new int[studentYears.size()];
+	private int[] formatStudentYears(ArrayList<Integer> studentIDs) {
+		int[] studentIDPrimitive = new int[studentIDs.size()];
 		
-		for (int i = 0; i < studentYears.size(); i++) {
-			studentYearPrimitive[i] = studentYears.get(i);
+		for (int i = 0; i < studentIDs.size(); i++) {
+			studentIDPrimitive[i] = studentIDs.get(i);
 		}
-		return studentYearPrimitive;
+		return studentIDPrimitive;
 		
 	}
 	
 	//Check for valid year and create Student from input
-	private Student checkYearAndCreateStudent(String year, ArrayList<Integer> studentYears, String firstName, String lastName) {
+	private Student checkYearAndCreateStudent(String stringYear, ArrayList<Integer> studentIDs, String firstName, String lastName) {
 		
-		int numYear = Integer.parseInt(year);
+		int year = Integer.parseInt(stringYear);
 		
 		//Create Student if year valid, else return null
-		if (numYear > 0 && numYear < 8) {
+		if (year > 0 && year < 8) {
 			
-			studentYears.add(numYear);
-			Student student = new Student(firstName, lastName, numYear);
+			Student student = new Student(firstName, lastName, year);
+			studentIDs.add(student.getStudentId());
 			return student;
 		
 		} else {
