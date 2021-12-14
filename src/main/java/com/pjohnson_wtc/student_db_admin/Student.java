@@ -51,9 +51,11 @@ public class Student {
 	public int getYear() {
 		return year;
 	}
+	
 	public int getStudentId() {
 		return studentId;
 	}
+	
 	public List<String> getEnrolledCourses() {
 		return enrolledCourses;
 	}

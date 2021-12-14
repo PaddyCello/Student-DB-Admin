@@ -129,14 +129,27 @@ public class Admin {
 			}
 	}
 	
-	public String showStatus(int studentID) {
-		String correctStudent = "";
+	//Show Student status - pass Student ID as an argument
+	public String showStatus(int studentId) {
+		
+		//Initialize String to receive Student details when found
+		String correctStudent = null;
+		
+		//Loop through list of Students, checking to see if the ID matches the one passed
 		for (Student student : allStudents) {
 			
-			if (student.getStudentId() == studentID) {
+			//If so, assign to correctStudent and break the loop
+			if (student.getStudentId() == studentId) {
+				
 				correctStudent = student.toString();
+				break;
 			}
 		}
+		
+		//Log a warning if an invalid ID has been passed
+		if (correctStudent == null) logger.log(Level.WARNING, "ID does not exist.");
+		
+		//Return either the Student info or null, depending on the outcome of the loop
 		return correctStudent;
 	}
 	
