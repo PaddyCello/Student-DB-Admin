@@ -129,6 +129,17 @@ public class Admin {
 			}
 	}
 	
+	public String showStatus(int studentID) {
+		String correctStudent = "";
+		for (Student student : allStudents) {
+			
+			if (student.getStudentId() == studentID) {
+				correctStudent = student.toString();
+			}
+		}
+		return correctStudent;
+	}
+	
 	public List<Student> getAllStudents() {
 		return allStudents;
 	}
