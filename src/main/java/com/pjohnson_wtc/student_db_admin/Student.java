@@ -27,6 +27,14 @@ public class Student {
 	public String getFirstName() {
 		return firstName;
 	}
+	
+	public String getLastName() {
+		return lastName;
+	}
+	
+	public int getYear() {
+		return year;
+	}
 	public int getStudentId() {
 		return studentId;
 	}

@@ -50,7 +50,7 @@ public class Admin {
 			//Validate year and create student, throw NumberFormatException if year not valid
 			try {
 				
-				allStudents.add(checkYearAndCreateStudent(stringYear, studentIDs, firstName, lastName));
+				checkYearAndCreateStudent(stringYear, studentIDs, firstName, lastName);
 				
 			} catch (NumberFormatException e) {
 				logger.log(Level.WARNING, "Invalid number for Student year", e);
@@ -85,28 +85,52 @@ public class Admin {
 		
 		int year = Integer.parseInt(stringYear);
 		
-		//Create Student if year valid, else return null
-		if (year > 0 && year < 8) {
-			
-			Student student = new Student(firstName, lastName, year);
-			studentIDs.add(student.getStudentId());
-			
-			logger.log(Level.INFO, "New Student created.");
-			return student;
-		
-		} else {
+		//Early return if year is not valid
+		if (year < 1 || year > 7) {
 			
 			logger.log(Level.WARNING, "Invalid year.");
 			return null;
 		}
+		
+		//Initialize boolean variable, to declare if new Student has been found in allStudents
+		boolean alreadyInList = false;
+		
+		//Loop through allStudents, checking to see if any existing entries have first name, last name and year from argument list
+		for (Student oneStudent : allStudents) {
+			
+			if (oneStudent.getFirstName().equals(firstName) &&
+				oneStudent.getLastName().equals(lastName) &&
+				oneStudent.getYear() == year) {
+				
+					//If so, set boolean to true and break the loop
+					alreadyInList = true;
+					logger.log(Level.WARNING, "Student already in database.");
+					break;
+			}
+		}
+		
+		//Create Student if Student not in list, else return null
+		if (!alreadyInList) {
+			
+				Student student = new Student(firstName, lastName, year);
+				
+				studentIDs.add(student.getStudentId());
+				
+				allStudents.add(student);
+				
+				logger.log(Level.INFO, "New Student created.");
+				return student;
+				
+			//Otherwise, return null	
+			} else {
+				
+				return null;
+				
+			}
 	}
 	
 	public List<Student> getAllStudents() {
 		return allStudents;
-	}
-
-	public static void main(String[] args) {
-
 	}
 
 }
