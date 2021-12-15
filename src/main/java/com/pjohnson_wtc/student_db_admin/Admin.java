@@ -130,7 +130,7 @@ public class Admin {
 				
 			}
 	}
-	//WTCET-19 - NEW until 154
+	//WTCET-20 - NEW
 	//Show Student status - pass Student ID as an argument
 	public String showStatus(int studentId) {
 		
@@ -141,7 +141,6 @@ public class Admin {
 		return (correctStudent == null) ? null : correctStudent.toString();
 	}
 	
-	//WTCET-20 - NEW
 	//Enroll a student in a new course
 	public String enrollInCourse(int studentId, String course) {
 		
