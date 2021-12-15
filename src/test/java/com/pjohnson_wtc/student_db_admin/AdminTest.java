@@ -100,5 +100,12 @@ public class AdminTest {
 		admin.enrollInCourse(35000, "History 101");
 		admin.getStudentById(35000).getEnrolledCourses();
 	}
+	@Test
+	public void testEnrollInCourse_studentAlreadyEnrolled() {
+		admin.createStudent(new ByteArrayInputStream("1\nPaddy\nJohnson\n2".getBytes()));
+		admin.getAllStudents().get(0).getEnrolledCourses().add("History 101");
+		admin.enrollInCourse(admin.getAllStudents().get(0).getStudentId(), "History 101");
+		assertEquals(1, admin.getAllStudents().get(0).getEnrolledCourses().size());
+	}
 	
 }

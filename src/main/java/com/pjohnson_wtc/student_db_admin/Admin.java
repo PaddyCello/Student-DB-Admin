@@ -157,7 +157,7 @@ public class Admin {
 	//WTCET-20 - NEW
 	public void enrollInCourse(int studentId, String course) {
 		Student student = getStudentById(studentId);
-		if (!checkCourses(course) || student == null) return;
+		if (!checkCourses(course) || student == null || !checkNotEnrolled(student, course)) return;
 		student.getEnrolledCourses().add(course);
 	}
 	
@@ -187,6 +187,21 @@ public class Admin {
 		}
 		
 		return courseOnList;
+	}
+	
+	private boolean checkNotEnrolled(Student student, String course) {
+		
+		boolean notEnrolled = true;
+		
+		for (String enrolledCourse : student.getEnrolledCourses()) {
+			
+			if (enrolledCourse.equals(course)) {
+				notEnrolled = false;
+				break;
+			}
+		}
+		
+		return notEnrolled;
 	}
 	
 	public List<Student> getAllStudents() {
