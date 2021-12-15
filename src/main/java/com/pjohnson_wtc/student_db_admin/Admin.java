@@ -156,13 +156,19 @@ public class Admin {
 	}
 	
 	//WTCET-20 - NEW
-	public void enrollInCourse(int studentId, String course) {
+	public String enrollInCourse(int studentId, String course) {
+		
 		Student student = getStudentById(studentId);
+		
 		if (!checkCourses(course) || 
 				student == null ||
 				student.getBalance().compareTo(new BigDecimal(600)) < 0 ||
-				!checkNotEnrolled(student, course)) return;
+				!checkNotEnrolled(student, course)) return null;
+		
 		student.getEnrolledCourses().add(course);
+		student.setBalance(student.getBalance().subtract(new BigDecimal(600)));
+		
+		return student.toString();
 	}
 	
 	public Student getStudentById(int studentId) {

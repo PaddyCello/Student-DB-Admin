@@ -116,4 +116,18 @@ public class AdminTest {
 		admin.enrollInCourse(admin.getAllStudents().get(0).getStudentId(), "History 101");
 		assertEquals(0, admin.getAllStudents().get(0).getEnrolledCourses().size());
 	}
+	@Test
+	public void testEnrollInCourse_insufficientFunds_balanceUnchanged() {
+		admin.createStudent(new ByteArrayInputStream("1\nPaddy\nJohnson\n2".getBytes()));
+		admin.getAllStudents().get(0).setBalance(new BigDecimal(599));
+		admin.enrollInCourse(admin.getAllStudents().get(0).getStudentId(), "History 101");
+		assertEquals(new BigDecimal(599), admin.getAllStudents().get(0).getBalance());
+	}
+	@Test
+	public void testEnrollInCourse_paymentDeducted() {
+		admin.createStudent(new ByteArrayInputStream("1\nPaddy\nJohnson\n2".getBytes()));
+		admin.getAllStudents().get(0).setBalance(new BigDecimal(600));
+		admin.enrollInCourse(admin.getAllStudents().get(0).getStudentId(), "History 101");
+		assertEquals(new BigDecimal(0), admin.getAllStudents().get(0).getBalance());
+	}
 }
