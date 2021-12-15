@@ -1,6 +1,7 @@
 package com.pjohnson_wtc.student_db_admin;
 
 import java.io.InputStream;
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
@@ -157,7 +158,10 @@ public class Admin {
 	//WTCET-20 - NEW
 	public void enrollInCourse(int studentId, String course) {
 		Student student = getStudentById(studentId);
-		if (!checkCourses(course) || student == null || !checkNotEnrolled(student, course)) return;
+		if (!checkCourses(course) || 
+				student == null ||
+				student.getBalance().compareTo(new BigDecimal(600)) < 0 ||
+				!checkNotEnrolled(student, course)) return;
 		student.getEnrolledCourses().add(course);
 	}
 	

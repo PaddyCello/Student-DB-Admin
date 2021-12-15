@@ -85,6 +85,7 @@ public class AdminTest {
 	@Test
 	public void testEnrollInCourse() {
 		admin.createStudent(new ByteArrayInputStream("1\nPaddy\nJohnson\n2".getBytes()));
+		admin.getAllStudents().get(0).setBalance(new BigDecimal(600));
 		admin.enrollInCourse(admin.getAllStudents().get(0).getStudentId(), "History 101");
 		assertEquals("History 101", admin.getAllStudents().get(0).getEnrolledCourses().get(0));
 	}
@@ -104,8 +105,15 @@ public class AdminTest {
 	public void testEnrollInCourse_studentAlreadyEnrolled() {
 		admin.createStudent(new ByteArrayInputStream("1\nPaddy\nJohnson\n2".getBytes()));
 		admin.getAllStudents().get(0).getEnrolledCourses().add("History 101");
+		admin.getAllStudents().get(0).setBalance(new BigDecimal(600));
 		admin.enrollInCourse(admin.getAllStudents().get(0).getStudentId(), "History 101");
 		assertEquals(1, admin.getAllStudents().get(0).getEnrolledCourses().size());
 	}
-	
+	@Test
+	public void testEnrollInCourse_insufficientFunds() {
+		admin.createStudent(new ByteArrayInputStream("1\nPaddy\nJohnson\n2".getBytes()));
+		admin.getAllStudents().get(0).setBalance(new BigDecimal(599));
+		admin.enrollInCourse(admin.getAllStudents().get(0).getStudentId(), "History 101");
+		assertEquals(0, admin.getAllStudents().get(0).getEnrolledCourses().size());
+	}
 }
