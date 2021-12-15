@@ -11,6 +11,7 @@ public class Admin {
 	Logger logger = Logger.getLogger("com.pjohnson_wtc.student_db_admin.admin");
 	
 	private List<Student> allStudents = new ArrayList<Student>();
+	private String[] courses = {"History 101", "Mathematics 101", "English 101", "Chemistry 101", "Computer Science 101"};
 	
 	//Method for creating new Student from user input
 	public int[] createStudent(InputStream inputStream) throws NumberFormatException {
@@ -156,6 +157,7 @@ public class Admin {
 	//WTCET-20 - NEW
 	public void enrollInCourse(int studentId, String course) {
 		Student student = getStudentById(studentId);
+		if (!checkCourses(course) || student == null) return;
 		student.getEnrolledCourses().add(course);
 	}
 	
@@ -166,9 +168,25 @@ public class Admin {
 		for (Student student : allStudents) {
 			if (student.getStudentId() == studentId) {
 				studentToReturn = student;
+				break;
 			}
 		}
 		return studentToReturn;
+	}
+	
+	private boolean checkCourses(String course) {
+		
+		boolean courseOnList = false;
+		
+		for (String courseInList : courses) {
+			
+			if (courseInList.equals(course)) {
+				courseOnList = true;
+				break;
+			}
+		}
+		
+		return courseOnList;
 	}
 	
 	public List<Student> getAllStudents() {

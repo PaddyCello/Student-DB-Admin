@@ -88,4 +88,17 @@ public class AdminTest {
 		admin.enrollInCourse(admin.getAllStudents().get(0).getStudentId(), "History 101");
 		assertEquals("History 101", admin.getAllStudents().get(0).getEnrolledCourses().get(0));
 	}
+	@Test
+	public void testEnrollInCourse_courseDoesNotExist() {
+		admin.createStudent(new ByteArrayInputStream("1\nPaddy\nJohnson\n2".getBytes()));
+		admin.enrollInCourse(admin.getAllStudents().get(0).getStudentId(), "History 102");
+		assertEquals(0, admin.getAllStudents().get(0).getEnrolledCourses().size());
+	}
+	@Test(expected = NullPointerException.class)
+	public void testEnrollInCourse_studentDoesNotExist() {
+		admin.createStudent(new ByteArrayInputStream("1\nPaddy\nJohnson\n2".getBytes()));
+		admin.enrollInCourse(35000, "History 101");
+		admin.getStudentById(35000).getEnrolledCourses();
+	}
+	
 }
