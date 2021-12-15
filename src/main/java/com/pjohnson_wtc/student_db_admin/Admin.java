@@ -153,6 +153,24 @@ public class Admin {
 		return correctStudent;
 	}
 	
+	//WTCET-20 - NEW
+	public void enrollInCourse(int studentId, String course) {
+		Student student = getStudentById(studentId);
+		student.getEnrolledCourses().add(course);
+	}
+	
+	public Student getStudentById(int studentId) {
+		
+		Student studentToReturn = null;
+		
+		for (Student student : allStudents) {
+			if (student.getStudentId() == studentId) {
+				studentToReturn = student;
+			}
+		}
+		return studentToReturn;
+	}
+	
 	public List<Student> getAllStudents() {
 		return allStudents;
 	}

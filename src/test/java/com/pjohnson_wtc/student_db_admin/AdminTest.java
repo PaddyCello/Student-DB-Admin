@@ -82,4 +82,10 @@ public class AdminTest {
 		admin.createStudent(new ByteArrayInputStream("1\nPaddy\nJohnson\n2".getBytes()));
 		assertNull(admin.showStatus(35000));
 	}
+	@Test
+	public void testEnrollInCourse() {
+		admin.createStudent(new ByteArrayInputStream("1\nPaddy\nJohnson\n2".getBytes()));
+		admin.enrollInCourse(admin.getAllStudents().get(0).getStudentId(), "History 101");
+		assertEquals("History 101", admin.getAllStudents().get(0).getEnrolledCourses().get(0));
+	}
 }
