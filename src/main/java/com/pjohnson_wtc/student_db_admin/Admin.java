@@ -54,7 +54,7 @@ public class Admin {
 				//Initialize studentIDs
 				studentIDs = new ArrayList<Integer>();
 				
-				checkYearAndCreateStudent(stringYear, studentIDs, firstName, lastName);
+				validateStudent(stringYear, studentIDs, firstName, lastName);
 				
 			} catch (NumberFormatException e) {
 				logger.log(Level.WARNING, "Invalid number for Student year", e);
@@ -85,7 +85,7 @@ public class Admin {
 	}
 	
 	//Check for valid year and create Student from input
-	private Student checkYearAndCreateStudent(String stringYear, ArrayList<Integer> studentIDs, String firstName, String lastName) {
+	private Student validateStudent(String stringYear, ArrayList<Integer> studentIDs, String firstName, String lastName) {
 		
 		int year = Integer.parseInt(stringYear);
 		
@@ -114,23 +114,23 @@ public class Admin {
 		}
 		
 		//Create Student if Student not in list, else return null
-		if (!alreadyInList) {
-			
-				Student student = new Student(firstName, lastName, year);
-				
-				studentIDs.add(student.getStudentId());
-				
-				allStudents.add(student);
-				
-				logger.log(Level.INFO, "New Student created.");
-				return student;
-				
-			//Otherwise, return null	
-			} else {
-				
-				return null;
-				
-			}
+		return (!alreadyInList) ? finallyMakeStudent(year, studentIDs, firstName, lastName) : null;
+	}
+	
+	//Method for making student and adding to ArrayLists
+	private Student finallyMakeStudent(int year, ArrayList<Integer> studentIDs, String firstName, String lastName) {
+		
+		logger.log(Level.INFO, "Creating Student.");
+		
+		Student student = new Student(firstName, lastName, year);
+		
+		studentIDs.add(student.getStudentId());
+		
+		allStudents.add(student);
+		
+		logger.log(Level.INFO, "New Student created.");
+		
+		return student;
 	}
 	
 	public List<Student> getAllStudents() {
