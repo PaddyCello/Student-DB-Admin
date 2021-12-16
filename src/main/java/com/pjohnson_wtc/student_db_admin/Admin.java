@@ -15,6 +15,9 @@ public class Admin {
 	//Method for creating new Student from user input
 	public int[] createStudent(InputStream inputStream) {
 		
+		//Create new ArrayList to hold IDs of successfully created Students
+		ArrayList<Integer> studentIDs = null;
+		
 		//Create new Scanner and take user input
 		Scanner scanner = new Scanner(inputStream);
 		
@@ -33,9 +36,6 @@ public class Admin {
 			return null;
 		}
 		
-		//Create new ArrayList to hold IDs of successfully created Students
-		ArrayList<Integer> studentIDs = new ArrayList<Integer>();
-		
 		//Loop through as many times as user wishes to create Students
 		for (int i = 0; i < numOfTimes; i++) {
 			
@@ -47,8 +47,12 @@ public class Admin {
 			logger.log(Level.INFO, "What is your year?");
 			String stringYear = scanner.nextLine();
 			
+			
 			//Validate year and create student, throw NumberFormatException if year not valid
 			try {
+				
+				//Initialize studentIDs
+				studentIDs = new ArrayList<Integer>();
 				
 				checkYearAndCreateStudent(stringYear, studentIDs, firstName, lastName);
 				
