@@ -13,12 +13,12 @@ public class Admin {
 	private List<Student> allStudents = new ArrayList<Student>();
 	
 	//Method for creating new Student from user input
-	public int[] createStudent(InputStream inputStream) throws NumberFormatException {
+	public int[] createStudent(InputStream inputStream) {
 		
 		//Create new Scanner and take user input
 		Scanner scanner = new Scanner(inputStream);
 		
-		System.out.println("How many students are you adding?");
+		logger.log(Level.INFO, "How many students are you adding?");
 		
 		//Throw NumberFormatException if user doesn't enter valid number
 		try {
@@ -40,11 +40,11 @@ public class Admin {
 		for (int i = 0; i < numOfTimes; i++) {
 			
 			//Prompt user for details of Student and save to local variables
-			System.out.println("What is your first name?");
+			logger.log(Level.INFO, "What is your first name?");
 			String firstName = scanner.nextLine();
-			System.out.println("What is your last name?");
+			logger.log(Level.INFO, "What is your last name?");
 			String lastName = scanner.nextLine();
-			System.out.println("What is your year?");
+			logger.log(Level.INFO, "What is your year?");
 			String stringYear = scanner.nextLine();
 			
 			//Validate year and create student, throw NumberFormatException if year not valid
