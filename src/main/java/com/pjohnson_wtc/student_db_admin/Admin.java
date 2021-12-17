@@ -146,8 +146,12 @@ public class Admin {
 			}
 		}
 		
-		//Log a warning if an invalid ID has been passed
-		if (correctStudent == null) logger.log(Level.WARNING, "ID does not exist.");
+		//Log a warning if an invalid ID has been passed, or a confirmation if Student found
+		if (correctStudent == null) {
+			logger.log(Level.WARNING, "ID does not exist.");
+		} else {
+			logger.log(Level.INFO, "Student found successfully.");
+		}
 		
 		//Return either the Student info or null, depending on the outcome of the loop
 		return correctStudent;
