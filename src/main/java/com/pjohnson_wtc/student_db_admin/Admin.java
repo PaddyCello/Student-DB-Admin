@@ -1,6 +1,7 @@
 package com.pjohnson_wtc.student_db_admin;
 
 import java.io.InputStream;
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
@@ -11,6 +12,7 @@ public class Admin {
 	Logger logger = Logger.getLogger("com.pjohnson_wtc.student_db_admin.admin");
 	
 	private List<Student> allStudents = new ArrayList<Student>();
+	private String[] courses = {"History 101", "Mathematics 101", "English 101", "Chemistry 101", "Computer Science 101"};
 	
 	//Method for creating new Student from user input
 	public int[] createStudent(InputStream inputStream) {
@@ -132,33 +134,106 @@ public class Admin {
 		
 		return student;
 	}
-	//WTCET-19 - NEW until 154
+	//WTCET-20 - NEW
 	//Show Student status - pass Student ID as an argument
 	public String showStatus(int studentId) {
 		
-		//Initialize String to receive Student details when found
-		String correctStudent = null;
+		//Initialize new Student to receive Student details when found
+		Student correctStudent = getStudentById(studentId);
 		
-		//Loop through list of Students, checking to see if the ID matches the one passed
+		//Return either the Student info or null, depending on the outcome of the method call
+		return (correctStudent == null) ? null : correctStudent.toString();
+	}
+	
+	//Enroll a student in a new course
+	public String enrollInCourse(int studentId, String course) {
+		
+		//Find student by ID
+		Student student = getStudentById(studentId);
+		
+		//Return early if course does not exist, ID is invalid, funds are insufficient or student already enrolled
+		if (!checkCourses(course) || 
+				student == null ||
+				student.getBalance().compareTo(new BigDecimal(600)) < 0 ||
+				!checkNotEnrolled(student, course)) return null;
+		
+		//Otherwise, add course to Student's list of enrolled courses
+		student.getEnrolledCourses().add(course);
+		
+		//Subtract cost of course from student's balance
+		student.setBalance(student.getBalance().subtract(new BigDecimal(600)));
+		
+		//Return Student status to display update
+		return student.toString();
+	}
+	
+	//Find Student by ID
+	public Student getStudentById(int studentId) {
+		
+		//Set a new Student to null
+		Student studentToReturn = null;
+		
+		//Loop through allStudents, looking for a match to the ID that was passed as an argument
 		for (Student student : allStudents) {
 			
-			//If so, assign to correctStudent and break the loop
 			if (student.getStudentId() == studentId) {
 				
-				correctStudent = student.toString();
+				//If successful, assign to studentToReturn and break the loop
+				studentToReturn = student;
+				break;
+			}
+		}
+		//Log a warning if an invalid ID has been passed
+		if (studentToReturn == null) logger.log(Level.WARNING, "ID does not exist.");
+		
+		//Return Student or null depending on outcome
+		return studentToReturn;
+	}
+	
+	//Check to see if course exists
+	private boolean checkCourses(String course) {
+		
+		//Initialize boolean to false
+		boolean courseOnList = false;
+		
+		//Loop through list of available courses
+		for (String courseFromList : courses) {
+			
+			//Once found, set boolean to true and break the loop
+			if (courseFromList.equals(course)) {
+				courseOnList = true;
 				break;
 			}
 		}
 		
-		//Log a warning if an invalid ID has been passed, or a confirmation if Student found
-		if (correctStudent == null) {
-			logger.log(Level.WARNING, "ID does not exist.");
-		} else {
-			logger.log(Level.INFO, "Student found successfully.");
+		//If boolean still false, log a warning
+		if (!courseOnList) logger.log(Level.WARNING, "Course does not exist.");
+		
+		//Return outcome of search
+		return courseOnList;
+	}
+	
+	//Check to see if student has not already enrolled on the course
+	private boolean checkNotEnrolled(Student student, String course) {
+		
+		//Initialize a boolean to true
+		boolean notEnrolled = true;
+		
+		//Loop through Student's list of enrolled courses, looking for the course that has been passed as an argument
+		for (String enrolledCourse : student.getEnrolledCourses()) {
+			
+			//If found, set boolean to false and break the loop
+			if (enrolledCourse.equals(course)) {
+				notEnrolled = false;
+				break;
+			}
 		}
 		
-		//Return either the Student info or null, depending on the outcome of the loop
-		return correctStudent;
+		//If course has been found, log a warning
+		if (!notEnrolled) logger.log(Level.WARNING, "Student already enrolled.");
+		
+		//Return outcome of search
+		return notEnrolled;
 	}
 	
 	public List<Student> getAllStudents() {

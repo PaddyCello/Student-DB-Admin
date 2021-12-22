@@ -60,4 +60,8 @@ public class Student {
 	public List<String> getEnrolledCourses() {
 		return enrolledCourses;
 	}
+	
+	public BigDecimal getBalance() {
+		return balance;
+	}
 }

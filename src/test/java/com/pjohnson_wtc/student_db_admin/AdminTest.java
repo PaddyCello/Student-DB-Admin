@@ -82,5 +82,53 @@ public class AdminTest {
 	public void testShowStatus_wrongId() {
 		admin.createStudent(new ByteArrayInputStream("1\nPaddy\nJohnson\n2".getBytes()));
 		assertNull(admin.showStatus(35000));
-  }
+	}
+	@Test
+	public void testEnrollInCourse() {
+		admin.createStudent(new ByteArrayInputStream("1\nPaddy\nJohnson\n2".getBytes()));
+		admin.getAllStudents().get(0).setBalance(new BigDecimal(600));
+		admin.enrollInCourse(admin.getAllStudents().get(0).getStudentId(), "History 101");
+		assertEquals("History 101", admin.getAllStudents().get(0).getEnrolledCourses().get(0));
+	}
+	@Test
+	public void testEnrollInCourse_courseDoesNotExist() {
+		admin.createStudent(new ByteArrayInputStream("1\nPaddy\nJohnson\n2".getBytes()));
+		admin.enrollInCourse(admin.getAllStudents().get(0).getStudentId(), "History 102");
+		assertEquals(0, admin.getAllStudents().get(0).getEnrolledCourses().size());
+	}
+	@Test(expected = NullPointerException.class)
+	public void testEnrollInCourse_studentDoesNotExist() {
+		admin.createStudent(new ByteArrayInputStream("1\nPaddy\nJohnson\n2".getBytes()));
+		admin.enrollInCourse(35000, "History 101");
+		admin.getStudentById(35000).getEnrolledCourses();
+	}
+	@Test
+	public void testEnrollInCourse_studentAlreadyEnrolled() {
+		admin.createStudent(new ByteArrayInputStream("1\nPaddy\nJohnson\n2".getBytes()));
+		admin.getAllStudents().get(0).getEnrolledCourses().add("History 101");
+		admin.getAllStudents().get(0).setBalance(new BigDecimal(600));
+		admin.enrollInCourse(admin.getAllStudents().get(0).getStudentId(), "History 101");
+		assertEquals(1, admin.getAllStudents().get(0).getEnrolledCourses().size());
+	}
+	@Test
+	public void testEnrollInCourse_insufficientFunds() {
+		admin.createStudent(new ByteArrayInputStream("1\nPaddy\nJohnson\n2".getBytes()));
+		admin.getAllStudents().get(0).setBalance(new BigDecimal(599));
+		admin.enrollInCourse(admin.getAllStudents().get(0).getStudentId(), "History 101");
+		assertEquals(0, admin.getAllStudents().get(0).getEnrolledCourses().size());
+	}
+	@Test
+	public void testEnrollInCourse_insufficientFunds_balanceUnchanged() {
+		admin.createStudent(new ByteArrayInputStream("1\nPaddy\nJohnson\n2".getBytes()));
+		admin.getAllStudents().get(0).setBalance(new BigDecimal(599));
+		admin.enrollInCourse(admin.getAllStudents().get(0).getStudentId(), "History 101");
+		assertEquals(new BigDecimal(599), admin.getAllStudents().get(0).getBalance());
+	}
+	@Test
+	public void testEnrollInCourse_paymentDeducted() {
+		admin.createStudent(new ByteArrayInputStream("1\nPaddy\nJohnson\n2".getBytes()));
+		admin.getAllStudents().get(0).setBalance(new BigDecimal(600));
+		admin.enrollInCourse(admin.getAllStudents().get(0).getStudentId(), "History 101");
+		assertEquals(new BigDecimal(0), admin.getAllStudents().get(0).getBalance());
+	}
 }
