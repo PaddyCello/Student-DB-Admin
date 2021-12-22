@@ -3,4 +3,24 @@
   <groupId>pjohnson_wtc</groupId>
   <artifactId>student_db_admin</artifactId>
   <version>0.0.1-SNAPSHOT</version>
+  
+  <dependencies>
+  		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<version>4.12</version>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.mockito</groupId>
+			<artifactId>mockito-core</artifactId>
+			<version>3.2.4</version>
+			<scope>test</scope>
+		</dependency>
+    </dependencies>
+    
+    <properties>
+   		<maven.compiler.source>11</maven.compiler.source>
+   		<maven.compiler.target>11</maven.compiler.target>
+	</properties>
 </project>
