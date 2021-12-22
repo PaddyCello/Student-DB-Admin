@@ -69,6 +69,7 @@ public class AdminTest {
 		admin.createStudent(new ByteArrayInputStream("1\nPaddy\nJohnson\n2".getBytes()));
 		assertEquals(1, admin.getAllStudents().size());
 	}
+  
 	@Test
 	public void testShowStatus() {
 		admin.createStudent(new ByteArrayInputStream("1\nPaddy\nJohnson\n2".getBytes()));
@@ -81,5 +82,5 @@ public class AdminTest {
 	public void testShowStatus_wrongId() {
 		admin.createStudent(new ByteArrayInputStream("1\nPaddy\nJohnson\n2".getBytes()));
 		assertNull(admin.showStatus(35000));
-	}
+  }
 }
