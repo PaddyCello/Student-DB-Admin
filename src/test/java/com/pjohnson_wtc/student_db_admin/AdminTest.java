@@ -3,6 +3,7 @@ package com.pjohnson_wtc.student_db_admin;
 import static org.junit.Assert.*;
 
 import java.io.ByteArrayInputStream;
+import java.math.BigDecimal;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -68,5 +69,18 @@ public class AdminTest {
 		admin.createStudent(new ByteArrayInputStream("1\nPaddy\nJohnson\n2".getBytes()));
 		assertEquals(1, admin.getAllStudents().size());
 	}
-
+  
+	@Test
+	public void testShowStatus() {
+		admin.createStudent(new ByteArrayInputStream("1\nPaddy\nJohnson\n2".getBytes()));
+		admin.getAllStudents().get(0).getEnrolledCourses().add("History 101");
+		admin.getAllStudents().get(0).getEnrolledCourses().add("Mathematics 101");
+		admin.getAllStudents().get(0).setBalance(new BigDecimal(725));
+		assertEquals("Paddy Johnson, " + admin.getAllStudents().get(0).getStudentId() + ", Courses enrolled: History 101, Mathematics 101, balance $725", admin.showStatus(admin.getAllStudents().get(0).getStudentId()));
+	}
+	@Test
+	public void testShowStatus_wrongId() {
+		admin.createStudent(new ByteArrayInputStream("1\nPaddy\nJohnson\n2".getBytes()));
+		assertNull(admin.showStatus(35000));
+  }
 }

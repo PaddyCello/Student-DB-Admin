@@ -132,6 +132,34 @@ public class Admin {
 		
 		return student;
 	}
+	//WTCET-19 - NEW until 154
+	//Show Student status - pass Student ID as an argument
+	public String showStatus(int studentId) {
+		
+		//Initialize String to receive Student details when found
+		String correctStudent = null;
+		
+		//Loop through list of Students, checking to see if the ID matches the one passed
+		for (Student student : allStudents) {
+			
+			//If so, assign to correctStudent and break the loop
+			if (student.getStudentId() == studentId) {
+				
+				correctStudent = student.toString();
+				break;
+			}
+		}
+		
+		//Log a warning if an invalid ID has been passed, or a confirmation if Student found
+		if (correctStudent == null) {
+			logger.log(Level.WARNING, "ID does not exist.");
+		} else {
+			logger.log(Level.INFO, "Student found successfully.");
+		}
+		
+		//Return either the Student info or null, depending on the outcome of the loop
+		return correctStudent;
+	}
 	
 	public List<Student> getAllStudents() {
 		return allStudents;

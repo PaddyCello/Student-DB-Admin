@@ -1,5 +1,9 @@
 package com.pjohnson_wtc.student_db_admin;
 
+import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.List;
+
 public class Student {
 	
 	//Instance variables
@@ -7,6 +11,8 @@ public class Student {
 	private String lastName;
 	private int year;
 	private int studentId;
+	private List<String> enrolledCourses = new ArrayList<String>();
+	private BigDecimal balance;
 	
 	//Constructor for Student
 	public Student(String firstName, String lastName, int year) {
@@ -23,6 +29,17 @@ public class Student {
 		return studentId;
 	}
 	
+	//WTCET-19 NEW until 41; also 60-62
+	//toString override
+	public String toString() {
+		return firstName + " " + lastName + ", " + studentId + ", Courses enrolled: " + String.join(", ", enrolledCourses) + ", balance $" + balance;
+	}
+	
+	//Necessary setters
+	public void setBalance(BigDecimal balance) {
+		this.balance = balance;
+	}
+	
 	//Necessary getters
 	public String getFirstName() {
 		return firstName;
@@ -35,7 +52,12 @@ public class Student {
 	public int getYear() {
 		return year;
 	}
+	
 	public int getStudentId() {
 		return studentId;
+	}
+	
+	public List<String> getEnrolledCourses() {
+		return enrolledCourses;
 	}
 }
