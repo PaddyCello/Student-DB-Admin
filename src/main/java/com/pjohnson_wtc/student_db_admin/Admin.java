@@ -15,12 +15,15 @@ public class Admin {
 	private String[] courses = {"History 101", "Mathematics 101", "English 101", "Chemistry 101", "Computer Science 101"};
 	
 	//Method for creating new Student from user input
-	public int[] createStudent(InputStream inputStream) throws NumberFormatException {
+	public int[] createStudent(InputStream inputStream) {
+		
+		//Create new ArrayList to hold IDs of successfully created Students
+		ArrayList<Integer> studentIDs = null;
 		
 		//Create new Scanner and take user input
 		Scanner scanner = new Scanner(inputStream);
 		
-		System.out.println("How many students are you adding?");
+		logger.log(Level.INFO, "How many students are you adding?");
 		
 		//Throw NumberFormatException if user doesn't enter valid number
 		try {
@@ -35,24 +38,25 @@ public class Admin {
 			return null;
 		}
 		
-		//Create new ArrayList to hold IDs of successfully created Students
-		ArrayList<Integer> studentIDs = new ArrayList<Integer>();
-		
 		//Loop through as many times as user wishes to create Students
 		for (int i = 0; i < numOfTimes; i++) {
 			
 			//Prompt user for details of Student and save to local variables
-			System.out.println("What is your first name?");
+			logger.log(Level.INFO, "What is your first name?");
 			String firstName = scanner.nextLine();
-			System.out.println("What is your last name?");
+			logger.log(Level.INFO, "What is your last name?");
 			String lastName = scanner.nextLine();
-			System.out.println("What is your year?");
+			logger.log(Level.INFO, "What is your year?");
 			String stringYear = scanner.nextLine();
+			
 			
 			//Validate year and create student, throw NumberFormatException if year not valid
 			try {
 				
-				checkYearAndCreateStudent(stringYear, studentIDs, firstName, lastName);
+				//Initialize studentIDs
+				studentIDs = new ArrayList<Integer>();
+				
+				validateStudent(stringYear, studentIDs, firstName, lastName);
 				
 			} catch (NumberFormatException e) {
 				logger.log(Level.WARNING, "Invalid number for Student year", e);
@@ -83,7 +87,7 @@ public class Admin {
 	}
 	
 	//Check for valid year and create Student from input
-	private Student checkYearAndCreateStudent(String stringYear, ArrayList<Integer> studentIDs, String firstName, String lastName) {
+	private Student validateStudent(String stringYear, ArrayList<Integer> studentIDs, String firstName, String lastName) {
 		
 		int year = Integer.parseInt(stringYear);
 		
@@ -112,23 +116,23 @@ public class Admin {
 		}
 		
 		//Create Student if Student not in list, else return null
-		if (!alreadyInList) {
-			
-				Student student = new Student(firstName, lastName, year);
-				
-				studentIDs.add(student.getStudentId());
-				
-				allStudents.add(student);
-				
-				logger.log(Level.INFO, "New Student created.");
-				return student;
-				
-			//Otherwise, return null	
-			} else {
-				
-				return null;
-				
-			}
+		return (!alreadyInList) ? finallyMakeStudent(year, studentIDs, firstName, lastName) : null;
+	}
+	
+	//Method for making student and adding to ArrayLists
+	private Student finallyMakeStudent(int year, ArrayList<Integer> studentIDs, String firstName, String lastName) {
+		
+		logger.log(Level.INFO, "Creating Student.");
+		
+		Student student = new Student(firstName, lastName, year);
+		
+		studentIDs.add(student.getStudentId());
+		
+		allStudents.add(student);
+		
+		logger.log(Level.INFO, "New Student created.");
+		
+		return student;
 	}
 	//WTCET-20 - NEW
 	//Show Student status - pass Student ID as an argument
