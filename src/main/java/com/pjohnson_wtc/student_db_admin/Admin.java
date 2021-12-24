@@ -9,7 +9,7 @@ import java.util.logging.*;
 
 public class Admin {
 	
-	Logger logger = Logger.getLogger("com.pjohnson_wtc.student_db_admin.admin");
+	private static Logger logger = Logger.getLogger("com.pjohnson_wtc.student_db_admin.admin");
 	
 	private List<Student> allStudents = new ArrayList<Student>();
 	private String[] courses = {"History 101", "Mathematics 101", "English 101", "Chemistry 101", "Computer Science 101"};
@@ -38,6 +38,9 @@ public class Admin {
 			return null;
 		}
 		
+		//Initialize studentIDs
+		studentIDs = new ArrayList<Integer>();
+		
 		//Loop through as many times as user wishes to create Students
 		for (int i = 0; i < numOfTimes; i++) {
 			
@@ -52,9 +55,6 @@ public class Admin {
 			
 			//Validate year and create student, throw NumberFormatException if year not valid
 			try {
-				
-				//Initialize studentIDs
-				studentIDs = new ArrayList<Integer>();
 				
 				validateStudent(stringYear, studentIDs, firstName, lastName);
 				
@@ -240,4 +240,27 @@ public class Admin {
 		return allStudents;
 	}
 
+	//Main - to try out our new application
+	public static void main(String[] args) {
+		
+		Admin admin = new Admin();
+		
+		int[] studentNums = admin.createStudent(System.in);
+		
+		Student student = admin.getStudentById(studentNums[0]);
+		
+		student.setBalance(new BigDecimal(599));
+		
+		admin.enrollInCourse(studentNums[0], "History 101");
+		
+		logger.log(Level.INFO, admin.showStatus(studentNums[0]));
+		
+		student.setBalance(new BigDecimal(1200));
+		
+		admin.enrollInCourse(studentNums[0], "History 101");
+		
+		admin.enrollInCourse(studentNums[0], "Mathematics 101");
+		
+		logger.log(Level.INFO, admin.showStatus(studentNums[0]));
+	}
 }
