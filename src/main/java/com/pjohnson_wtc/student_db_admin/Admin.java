@@ -134,7 +134,7 @@ public class Admin {
 		
 		return student;
 	}
-	//WTCET-20 - NEW
+
 	//Show Student status - pass Student ID as an argument
 	public String showStatus(int studentId) {
 		

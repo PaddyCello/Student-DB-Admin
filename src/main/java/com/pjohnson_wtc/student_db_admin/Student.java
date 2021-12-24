@@ -29,7 +29,6 @@ public class Student {
 		return studentId;
 	}
 	
-	//WTCET-19 NEW until 41; also 60-62
 	//toString override
 	public String toString() {
 		return firstName + " " + lastName + ", " + studentId + ", Courses enrolled: " + String.join(", ", enrolledCourses) + ", balance $" + balance;
