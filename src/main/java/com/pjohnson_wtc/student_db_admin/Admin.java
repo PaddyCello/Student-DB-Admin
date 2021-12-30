@@ -61,8 +61,7 @@ public class Admin {
 			}
 		}
 		
-		//Close scanner and return array of student IDs
-		scanner.close();
+		//Return array of student IDs
 		return formatStudentYears(studentIDs);
 		
 		} catch (NumberFormatException nfe) {
