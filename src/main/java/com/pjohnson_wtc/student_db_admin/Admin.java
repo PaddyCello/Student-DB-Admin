@@ -21,18 +21,15 @@ public class Admin {
 		ArrayList<Integer> studentIDs = null;
 		
 		//Create new Scanner and take user input
-		Scanner scanner = new Scanner(inputStream);
-		
 		logger.log(Level.INFO, "How many students are you adding?");
 		
 		//Throw NumberFormatException if user doesn't enter valid number
-		try {
+		try (Scanner scanner = new Scanner(inputStream)){
 			
 			int numOfTimes = Integer.parseInt(scanner.nextLine());
 		
 		//Return early if user enters number lower than one
 		if (numOfTimes < 1) {
-			scanner.close();
 			
 			logger.log(Level.WARNING, "Number of Students too low.");
 			return null;
@@ -58,8 +55,8 @@ public class Admin {
 				
 				validateStudent(stringYear, studentIDs, firstName, lastName);
 				
-			} catch (NumberFormatException e) {
-				logger.log(Level.WARNING, "Invalid number for Student year", e);
+			} catch (NumberFormatException nfe) {
+				logger.log(Level.WARNING, "Invalid number for Student year", nfe.toString());
 				continue;
 			}
 		}
@@ -68,9 +65,8 @@ public class Admin {
 		scanner.close();
 		return formatStudentYears(studentIDs);
 		
-		} catch (NumberFormatException e) {
-			logger.log(Level.WARNING, "Invalid number for number of Students", e);
-			scanner.close();
+		} catch (NumberFormatException nfe) {
+			logger.log(Level.WARNING, "Invalid number for number of Students", nfe.toString());
 			return null;
 		}
 	}
