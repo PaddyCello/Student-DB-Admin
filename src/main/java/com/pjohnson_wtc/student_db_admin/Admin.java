@@ -9,7 +9,7 @@ import java.util.logging.*;
 
 public class Admin {
 	
-	Logger logger = Logger.getLogger("com.pjohnson_wtc.student_db_admin.admin");
+	private static Logger logger = Logger.getLogger("com.pjohnson_wtc.student_db_admin.admin");
 	
 	private List<Student> allStudents = new ArrayList<Student>();
 	private String[] courses = {"History 101", "Mathematics 101", "English 101", "Chemistry 101", "Computer Science 101"};
@@ -21,22 +21,22 @@ public class Admin {
 		ArrayList<Integer> studentIDs = null;
 		
 		//Create new Scanner and take user input
-		Scanner scanner = new Scanner(inputStream);
-		
 		logger.log(Level.INFO, "How many students are you adding?");
 		
 		//Throw NumberFormatException if user doesn't enter valid number
-		try {
+		try (Scanner scanner = new Scanner(inputStream)){
 			
 			int numOfTimes = Integer.parseInt(scanner.nextLine());
 		
 		//Return early if user enters number lower than one
 		if (numOfTimes < 1) {
-			scanner.close();
 			
 			logger.log(Level.WARNING, "Number of Students too low.");
 			return null;
 		}
+		
+		//Initialize studentIDs
+		studentIDs = new ArrayList<Integer>();
 		
 		//Loop through as many times as user wishes to create Students
 		for (int i = 0; i < numOfTimes; i++) {
@@ -53,24 +53,19 @@ public class Admin {
 			//Validate year and create student, throw NumberFormatException if year not valid
 			try {
 				
-				//Initialize studentIDs
-				studentIDs = new ArrayList<Integer>();
-				
 				validateStudent(stringYear, studentIDs, firstName, lastName);
 				
-			} catch (NumberFormatException e) {
-				logger.log(Level.WARNING, "Invalid number for Student year", e);
+			} catch (NumberFormatException nfe) {
+				logger.log(Level.WARNING, "Invalid number for Student year", nfe.toString());
 				continue;
 			}
 		}
 		
-		//Close scanner and return array of student IDs
-		scanner.close();
+		//Return array of student IDs
 		return formatStudentYears(studentIDs);
 		
-		} catch (NumberFormatException e) {
-			logger.log(Level.WARNING, "Invalid number for number of Students", e);
-			scanner.close();
+		} catch (NumberFormatException nfe) {
+			logger.log(Level.WARNING, "Invalid number for number of Students", nfe.toString());
 			return null;
 		}
 	}
@@ -134,7 +129,7 @@ public class Admin {
 		
 		return student;
 	}
-	//WTCET-20 - NEW
+
 	//Show Student status - pass Student ID as an argument
 	public String showStatus(int studentId) {
 		
@@ -240,4 +235,27 @@ public class Admin {
 		return allStudents;
 	}
 
+	//Main - to try out our new application
+	public static void main(String[] args) {
+		
+		Admin admin = new Admin();
+		
+		int[] studentNums = admin.createStudent(System.in);
+		
+		Student student = admin.getStudentById(studentNums[0]);
+		
+		student.setBalance(new BigDecimal(599));
+		
+		admin.enrollInCourse(studentNums[0], "History 101");
+		
+		logger.log(Level.INFO, admin.showStatus(studentNums[0]));
+		
+		student.setBalance(new BigDecimal(1200));
+		
+		admin.enrollInCourse(studentNums[0], "History 101");
+		
+		admin.enrollInCourse(studentNums[0], "Mathematics 101");
+		
+		logger.log(Level.INFO, admin.showStatus(studentNums[0]));
+	}
 }
